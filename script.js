@@ -1,5 +1,9 @@
 var currentMusic = 0;
 
+if (typeof currentMusic === 'undefined') {
+    var currentMusic = 0;
+}
+
 const music = document.querySelector('#audio');
 
 const seekBar = document.querySelector('.seek-bar');
@@ -47,7 +51,7 @@ const setMusic = (i) => {
     },300);
 }
 
-setMusic(0);
+setMusic(currentMusic);
 
 //formatting time in minutes and seconds
 
