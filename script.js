@@ -36,8 +36,11 @@ const setMusic = (i) => {
     currentMusic = i;
 
     // Pause and reset the current playback
-    music.pause();
-    music.currentTime = 0;
+    if (music.src) {
+        music.pause();
+        music.currentTime = 0;
+        music.src = '';
+    }
 
     // Set the new song details
     music.src = song.path;
@@ -59,7 +62,7 @@ const setMusic = (i) => {
 };
 
 const playMusic = () => {
-    if (music) {
+    if (music.readyState >= 2) { // Check if the audio is loaded
         music.play()
             .then(() => {
                 playBtn.classList.remove('pause');
@@ -69,9 +72,11 @@ const playMusic = () => {
                 console.error('Error during play:', error);
             });
     } else {
-        console.error('Error: Music element is undefined');
+        console.error('Error: Music is not fully loaded.');
     }
 };
+
+
 setMusic(0);
 
 //formatting time in minutes and seconds
