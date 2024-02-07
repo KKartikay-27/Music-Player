@@ -1,6 +1,8 @@
 let currentMusic = 0;
 
-const music = document.querySelector('#audio');
+// const music = document.querySelector('#audio');
+
+
 
 const seekBar = document.querySelector('.seek-bar');
 const songName = document.querySelector('.song-name');
@@ -26,27 +28,50 @@ playBtn.addEventListener('click', () =>{
 
 })
 
+let music = new Audio();
+
 const setMusic = (i) => {
     seekBar.value = 0;
     let song = songs[i];
     currentMusic = i;
+
+    // Pause and reset the current playback
+    music.pause();
+    music.currentTime = 0;
+
+    // Set the new song details
     music.src = song.path;
 
     songName.innerHTML = song.name;
     artistName.innerHTML = song.artist;
     disk.style.backgroundImage = `url('${song.cover}')`;
-
     disk.style.transform = 'rotate(0deg)';
-    
-    
     currentTime.innerHTML = '00:00';
-    setTimeout(() => {
-        seekBar.max = music.duration;
-        console.log(music.duration);
-        musicDuration.innerHTML = formatTime(music.duration);    
-    },300);
-}
 
+    // Event listener for when metadata is loaded
+    music.addEventListener('loadedmetadata', () => {
+        seekBar.max = music.duration;
+        musicDuration.innerHTML = formatTime(music.duration);
+
+        // Now that the audio is loaded, play it
+        playMusic();
+    });
+};
+
+const playMusic = () => {
+    if (music) {
+        music.play()
+            .then(() => {
+                playBtn.classList.remove('pause');
+                disk.classList.remove('play');
+            })
+            .catch((error) => {
+                console.error('Error during play:', error);
+            });
+    } else {
+        console.error('Error: Music element is undefined');
+    }
+};
 setMusic(0);
 
 //formatting time in minutes and seconds
@@ -77,12 +102,6 @@ setInterval(() => {
 seekBar.addEventListener('change', () => {
     music.currentTime = seekBar.value;
 })
-
-const playMusic =  () => {
-    music.play();
-    playBtn.classList.remove('pause');
-    disk.classList.remove('play');
-}
 
 
 //forward and backward btn
