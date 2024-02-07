@@ -54,14 +54,21 @@ const setMusic = (i) => {
     currentTime.innerHTML = '00:00';
 
     // Event listener for when the audio can play through without interruption
-    music.addEventListener('canplaythrough', () => {
+    const onCanPlayThrough = () => {
         seekBar.max = music.duration;
         musicDuration.innerHTML = formatTime(music.duration);
         
         // Play the music once it's fully loaded
         playMusic();
-    }, { once: true });
+
+        // Remove the event listener after it has been triggered once
+        music.removeEventListener('canplaythrough', onCanPlayThrough);
+    };
+
+    // Add the event listener
+    music.addEventListener('canplaythrough', onCanPlayThrough);
 };
+
 
 const playMusic = () => {
     if (music.readyState >= 2) { // Check if the audio is loaded
