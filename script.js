@@ -30,6 +30,8 @@ playBtn.addEventListener('click', () =>{
 
 let music = new Audio();
 
+let music = new Audio();
+
 const setMusic = (i) => {
     seekBar.value = 0;
     let song = songs[i];
@@ -51,15 +53,15 @@ const setMusic = (i) => {
     disk.style.transform = 'rotate(0deg)';
     currentTime.innerHTML = '00:00';
 
-    // Event listener for when metadata is loaded
-    music.addEventListener('loadedmetadata', () => {
+    // Event listener for when the audio can play through without interruption
+    music.addEventListener('canplaythrough', () => {
         seekBar.max = music.duration;
         musicDuration.innerHTML = formatTime(music.duration);
-
-        // Do not automatically play here
-    });
+        
+        // Play the music once it's fully loaded
+        playMusic();
+    }, { once: true });
 };
-
 
 const playMusic = () => {
     if (music.readyState >= 2) { // Check if the audio is loaded
@@ -72,16 +74,9 @@ const playMusic = () => {
                 console.error('Error during play:', error);
             });
     } else {
-        // If the audio is not fully loaded, wait for the 'canplaythrough' event before playing
-        music.addEventListener('canplaythrough', () => {
-            playMusic();
-        }, { once: true });
-
         console.error('Error: Music is not fully loaded. Waiting for "canplaythrough" event.');
     }
 };
-
-
 
 setMusic(0);
 
