@@ -1,168 +1,99 @@
 let currentMusic = 0;
+        const audio = document.getElementById('audio');
+        const seekBar = document.querySelector('.seek-bar');
+        const songName = document.querySelector('.song-name');
+        const artistName = document.querySelector('.artist');
+        const disk = document.querySelector('.disk');
+        const currentTime = document.querySelector('.current-time');
+        const musicDuration = document.querySelector('.song-duration');
+        const playBtn = document.querySelector('.play-btn');
+        const forwardBtn = document.querySelector('.forward-btn');
+        const backwardBtn = document.querySelector('.backwards-btn');
 
-const music = document.querySelector('#audio');
+        const songs = [
+            {
+                name: 'Kinni Kinni',
+                path: 'Assets/Music/Kinni Kinni.mp3',
+                artist: 'Diljit Dosanjh',
+                cover: 'Assets/Cover/Kinni Kinni.jpg'
+            },
+            {
+                name: 'Softly',
+                path: 'Assets/Music/Softly.mp3',
+                artist: 'Karan Aujla',
+                cover: 'Assets/Cover/Softly.jpg'
+            },
+            // Add more songs as needed
+        ];
 
+        function setMusic(i) {
+            seekBar.value = 0;
+            let song = songs[i];
+            currentMusic = i;
+            audio.src = song.path;
+            songName.innerHTML = song.name;
+            artistName.innerHTML = song.artist;
+            disk.style.backgroundImage = `url('${song.cover}')`;
+            disk.style.transform = 'rotate(0deg)';
+            currentTime.innerHTML = '00:00';
 
-
-const seekBar = document.querySelector('.seek-bar');
-const songName = document.querySelector('.song-name');
-const artistName = document.querySelector('.artist');
-const disk = document.querySelector('.disk');
-const currentTime = document.querySelector('.current-time');
-const musicDuration = document.querySelector('.song-duration');
-const playBtn = document.querySelector('.play-btn');
-const forwardBtn = document.querySelector('.forward-btn');
-const backwardBtn = document.querySelector('.backwards-btn');
-
-playBtn.addEventListener('click', () =>{
-
-    if(playBtn.className.includes('pause')){
-        music.play();
-    }else{
-        music.pause();
-    }
-
-    playBtn.classList.toggle('pause');
-    disk.classList.toggle('play');
-    playBtn.style.outline = 'none';
-
-})
-
-let music = new Audio();
-
-let music = new Audio();
-
-const setMusic = (i) => {
-    seekBar.value = 0;
-    let song = songs[i];
-    currentMusic = i;
-
-    // Pause and reset the current playback
-    if (music.src) {
-        music.pause();
-        music.currentTime = 0;
-        music.src = '';
-    }
-
-    // Set the new song details
-    music.src = song.path;
-
-    songName.innerHTML = song.name;
-    artistName.innerHTML = song.artist;
-    disk.style.backgroundImage = `url('${song.cover}')`;
-    disk.style.transform = 'rotate(0deg)';
-    currentTime.innerHTML = '00:00';
-
-    // Event listener for when metadata is loaded
-    music.addEventListener('loadedmetadata', () => {
-        seekBar.max = music.duration;
-        musicDuration.innerHTML = formatTime(music.duration);
-
-        // Now that the audio is loaded, play it
-        playMusic();
-    });
-};
-
-
-const playMusic = () => {
-    if (music.readyState >= 2) { // Check if the audio is loaded
-        music.play()
-            .then(() => {
-                playBtn.classList.remove('pause');
-                disk.classList.remove('play');
-            })
-            .catch((error) => {
-                console.error('Error during play:', error);
-            });
-    } else {
-        console.error('Error: Music is not fully loaded. Waiting for "canplaythrough" event.');
-    }
-};
-
-setMusic(0);
-
-//formatting time in minutes and seconds
-
-const formatTime = (time) => {
-    let min = Math.floor(time/60);
-    if(min < 10){
-        min = `0${min}`;
-    }
-    let sec = Math.floor(time%60);
-    if(sec < 10){
-        sec = `0${sec}`;
-    }
-    return `${min}:${sec}`;
-}
-
-
-// seek-Bar
-setInterval(() => {
-    if (!playBtn.classList.contains('pause')) {
-        seekBar.value = music.currentTime;
-        currentTime.innerHTML = formatTime(music.currentTime);
-        if (Math.floor(music.currentTime) == Math.floor(seekBar.max)) {
-            forwardBtn.click();
-        }
-    }
-}, 500);
-
-
-seekBar.addEventListener('change', () => {
-    music.currentTime = seekBar.value;
-})
-
-
-//forward and backward btn
-forwardBtn.addEventListener('click',()=> {
-    if(currentMusic >= songs.length - 1){
-        currentMusic = 0;
-    }
-    else{
-        currentMusic++;
-    }
-    setMusic(currentMusic);
-    playMusic();
-    playBtn.focus(); 
-})
-
-backwardBtn.addEventListener('click',() => {
-    if(currentMusic <= 0){
-        currentMusic = songs.length -1;
-    }
-    else{
-        currentMusic--;
-    }
-    setMusic(currentMusic);
-    playMusic();
-    playBtn.focus(); 
-})
-
-// ... (your existing code)
-
-document.addEventListener('keydown', (event) => {
-    if (event.code === 'Space') {
-        event.preventDefault(); // Prevent default action (e.g., clicking a focused button)
-        playBtn.style.outline = 'none';
-
-        // Your play/pause logic here
-        if (playBtn.classList.contains('pause')) {
-            music.play();
-        } else {
-            music.pause();
+            audio.load();
         }
 
-        playBtn.classList.toggle('pause');
-        disk.classList.toggle('play');
-    }
-});
-    
-// Event listener for forward/backward on arrow key presses
-document.addEventListener('keydown', (event) => {
-    if (event.code === 'ArrowRight') {
-        forwardBtn.click(); // Simulate a click on the forward button
-    } else if (event.code === 'ArrowLeft') {
-        backwardBtn.click(); // Simulate a click on the backward button
-    }
-});
+        function playPause() {
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+            playBtn.classList.toggle('pause');
+            disk.classList.toggle('play');
+            playBtn.style.outline = 'none';
+        }
 
+        function forward() {
+            currentMusic = (currentMusic + 1) % songs.length;
+            setMusic(currentMusic);
+            audio.play();
+        }
+
+        function backward() {
+            currentMusic = (currentMusic - 1 + songs.length) % songs.length;
+            setMusic(currentMusic);
+            audio.play();
+        }
+
+        playBtn.addEventListener('click', playPause);
+        forwardBtn.addEventListener('click', forward);
+        backwardBtn.addEventListener('click', backward);
+
+        // Update song duration and current time
+        audio.addEventListener('loadedmetadata', () => {
+            seekBar.max = audio.duration;
+            musicDuration.innerHTML = formatTime(audio.duration);
+        });
+
+        // Update current time during playback
+        setInterval(() => {
+            if (!audio.paused) {
+                seekBar.value = audio.currentTime;
+                currentTime.innerHTML = formatTime(audio.currentTime);
+            }
+        }, 500);
+
+        // Seek bar change event
+        seekBar.addEventListener('change', () => {
+            audio.currentTime = seekBar.value;
+        });
+
+        function formatTime(time) {
+            let min = Math.floor(time / 60);
+            if (min < 10) {
+                min = `0${min}`;
+            }
+            let sec = Math.floor(time % 60);
+            if (sec < 10) {
+                sec = `0${sec}`;
+            }
+            return `${min}:${sec}`;
+        }
