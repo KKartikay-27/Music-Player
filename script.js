@@ -56,10 +56,10 @@ const setMusic = (i) => {
         seekBar.max = music.duration;
         musicDuration.innerHTML = formatTime(music.duration);
 
-        // Now that the audio is loaded, play it
-        playMusic();
+        // Do not automatically play here
     });
 };
+
 
 const playMusic = () => {
     if (music.readyState >= 2) { // Check if the audio is loaded
@@ -94,15 +94,17 @@ const formatTime = (time) => {
 }
 
 
-
 // seek-Bar
 setInterval(() => {
-    seekBar.value = music.currentTime;
-    currentTime.innerHTML = formatTime(music.currentTime);   
-    if(Math.floor(music.currentTime) == Math.floor(seekBar.max)){
-        forwardBtn.click();
-    } 
-},500);
+    if (!playBtn.classList.contains('pause')) {
+        seekBar.value = music.currentTime;
+        currentTime.innerHTML = formatTime(music.currentTime);
+        if (Math.floor(music.currentTime) == Math.floor(seekBar.max)) {
+            forwardBtn.click();
+        }
+    }
+}, 500);
+
 
 seekBar.addEventListener('change', () => {
     music.currentTime = seekBar.value;
