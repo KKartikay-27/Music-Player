@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mp3 Music Player</title>
+
+    <link rel="shortcut icon" href="Assets/1.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+    <img class="bg" src="Assets/pp.jpg" alt="">
+
+    <div>
+        <audio src="" id="audio"></audio>
+
+        <div class="music-player">
+            <h1 class="song-name"></h1>
+            <p class="artist"></p>
+            
+            <div class="disk play"></div>
+            
+            <div class="song-slider">
+                <input type="range" value="0" class="seek-bar">
+                
+                <span class="current-time">00:00</span>
+                <span class="song-duration">00:00</span>
+
+                <div class="controls">
+                    <button class="btn backwards-btn"><img src="Assets/pre.png" alt=""></button>
+                    <button class="play-btn pause">
+                        <span></span>
+                        <span></span>
+                        <button class="btn forward-btn"><img src="Assets/nxt.png" alt=""></button>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+        
+    </div>
+
+    <script src="Assets/music.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
