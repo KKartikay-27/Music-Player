@@ -41,15 +41,15 @@ const setMusic = (i) => {
     disk.style.backgroundImage = `url('${song.cover}')`;
 
     disk.style.transform = 'rotate(0deg)';
-    
-    
+
     currentTime.innerHTML = '00:00';
-    setTimeout(() => {
+
+    music.oncanplaythrough = () => {
         seekBar.max = music.duration;
-        console.log(music.duration);
-        musicDuration.innerHTML = formatTime(music.duration);    
-    },300);
-}
+        musicDuration.innerHTML = formatTime(music.duration);
+    };
+};
+
 
 setMusic(currentMusic);
 
