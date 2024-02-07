@@ -72,9 +72,15 @@ const playMusic = () => {
                 console.error('Error during play:', error);
             });
     } else {
-        console.error('Error: Music is not fully loaded.');
+        // If the audio is not fully loaded, wait for the 'canplaythrough' event before playing
+        music.addEventListener('canplaythrough', () => {
+            playMusic();
+        }, { once: true });
+
+        console.error('Error: Music is not fully loaded. Waiting for "canplaythrough" event.');
     }
 };
+
 
 
 setMusic(0);
