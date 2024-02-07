@@ -1,6 +1,6 @@
 let currentMusic = 0;
 
-// const music = document.querySelector('#audio');
+const music = document.querySelector('#audio');
 
 
 
@@ -53,20 +53,14 @@ const setMusic = (i) => {
     disk.style.transform = 'rotate(0deg)';
     currentTime.innerHTML = '00:00';
 
-    // Event listener for when the audio can play through without interruption
-    const onCanPlayThrough = () => {
+    // Event listener for when metadata is loaded
+    music.addEventListener('loadedmetadata', () => {
         seekBar.max = music.duration;
         musicDuration.innerHTML = formatTime(music.duration);
-        
-        // Play the music once it's fully loaded
+
+        // Now that the audio is loaded, play it
         playMusic();
-
-        // Remove the event listener after it has been triggered once
-        music.removeEventListener('canplaythrough', onCanPlayThrough);
-    };
-
-    // Add the event listener
-    music.addEventListener('canplaythrough', onCanPlayThrough);
+    });
 };
 
 
