@@ -1,7 +1,7 @@
 var currentMusic = 0;
 
 if (typeof currentMusic === 'undefined') {
-    var currentMusic = 0;
+    currentMusic = 0;
 }
 
 const music = document.querySelector('#audio');
@@ -15,14 +15,14 @@ const playBtn = document.querySelector('.play-btn');
 const forwardBtn = document.querySelector('.forward-btn');
 const backwardBtn = document.querySelector('.backwards-btn');
 
-const playMusic = () => {
+function playMusic() {
     // Play the music if it's ready and not already playing
     if (!isNaN(music.duration) && music.duration > 0 && music.paused) {
         music.play().catch(error => {
             console.error('Playback was interrupted:', error);
         });
     }
-};
+}
 
 playBtn.addEventListener('click', () => {
     if (playBtn.className.includes('pause')) {
@@ -73,66 +73,6 @@ const setMusic = (i) => {
 
 // ... (your existing code)
 
-
-setMusic(currentMusic);
-
-//formatting time in minutes and seconds
-
-const formatTime = (time) => {
-    let min = Math.floor(time/60);
-    if(min < 10){
-        min = `0${min}`;
-    }
-    let sec = Math.floor(time%60);
-    if(sec < 10){
-        sec = `0${sec}`;
-    }
-    return `${min}:${sec}`;
-}
-
-
-
-// seek-Bar
-setInterval(() => {
-    seekBar.value = music.currentTime;
-    currentTime.innerHTML = formatTime(music.currentTime);   
-    if(Math.floor(music.currentTime) == Math.floor(seekBar.max)){
-        forwardBtn.click();
-    } 
-},500);
-
-seekBar.addEventListener('change', () => {
-    music.currentTime = seekBar.value;
-})
-
-
-//forward and backward btn
-forwardBtn.addEventListener('click',()=> {
-    if(currentMusic >= songs.length - 1){
-        currentMusic = 0;
-    }
-    else{
-        currentMusic++;
-    }
-    setMusic(currentMusic);
-    playMusic();
-    playBtn.focus(); 
-})
-
-backwardBtn.addEventListener('click',() => {
-    if(currentMusic <= 0){
-        currentMusic = songs.length -1;
-    }
-    else{
-        currentMusic--;
-    }
-    setMusic(currentMusic);
-    playMusic();
-    playBtn.focus(); 
-})
-
-// ... (your existing code)
-
 document.addEventListener('keydown', (event) => {
     if (event.code === 'Space') {
         event.preventDefault(); // Prevent default action (e.g., clicking a focused button)
@@ -149,7 +89,7 @@ document.addEventListener('keydown', (event) => {
         disk.classList.toggle('play');
     }
 });
-    
+
 // Event listener for forward/backward on arrow key presses
 document.addEventListener('keydown', (event) => {
     if (event.code === 'ArrowRight') {
@@ -158,3 +98,5 @@ document.addEventListener('keydown', (event) => {
         backwardBtn.click(); // Simulate a click on the backward button
     }
 });
+
+// ... (your existing code)
