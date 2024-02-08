@@ -1,8 +1,4 @@
-var currentMusic = 0;
-
-if (typeof currentMusic === 'undefined') {
-    var currentMusic = 0;
-}
+let currentMusic = 0;
 
 const music = document.querySelector('#audio');
 
@@ -17,7 +13,7 @@ const forwardBtn = document.querySelector('.forward-btn');
 const backwardBtn = document.querySelector('.backwards-btn');
 
 playBtn.addEventListener('click', () => {
-    if (music.paused) {
+    if (playBtn.className.includes('pause')) {
         music.play();
     } else {
         music.pause();
@@ -28,7 +24,7 @@ playBtn.addEventListener('click', () => {
     playBtn.style.outline = 'none';
 });
 
-
+//setup music
 const setMusic = (i) => {
     seekBar.value = 0;
     let song = songs[i];
@@ -43,14 +39,14 @@ const setMusic = (i) => {
 
     currentTime.innerHTML = '00:00';
 
-    music.oncanplaythrough = () => {
+    setTimeout(() => {
         seekBar.max = music.duration;
         musicDuration.innerHTML = formatTime(music.duration);
-    };
+    }, 300);
 };
 
+setMusic(0);
 
-setMusic(currentMusic);
 
 //formatting time in minutes and seconds
 
@@ -113,7 +109,6 @@ backwardBtn.addEventListener('click',() => {
     playBtn.focus(); 
 })
 
-// ... (your existing code)
 
 document.addEventListener('keydown', (event) => {
     if (event.code === 'Space') {
