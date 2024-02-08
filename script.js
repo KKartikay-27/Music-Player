@@ -17,20 +17,20 @@ const forwardBtn = document.querySelector('.forward-btn');
 const backwardBtn = document.querySelector('.backwards-btn');
 
 playBtn.addEventListener('click', () => {
-    const playPromise = music.play();
-    
-    if (playPromise !== undefined) {
-        playPromise.then(() => {
-            // Playback started successfully
-        }).catch(error => {
+    if (playBtn.className.includes('pause')) {
+        // Play the music when there is a user click
+        music.play().catch(error => {
             console.error('Playback was interrupted:', error);
         });
+    } else {
+        music.pause();
     }
 
     playBtn.classList.toggle('pause');
     disk.classList.toggle('play');
     playBtn.style.outline = 'none';
 });
+
 
 const setMusic = (i) => {
     seekBar.value = 0;
