@@ -36,22 +36,34 @@ const setMusic = (i) => {
     seekBar.value = 0;
     let song = songs[i];
     currentMusic = i;
+
+    // Pause the current audio before changing the source
+    music.pause();
+
+    // Set the new music source
     music.src = song.path;
 
-    songName.innerHTML = song.name;
-    artistName.innerHTML = song.artist;
-    disk.style.backgroundImage = `url('${song.cover}')`;
+    // Load the metadata and update UI elements
+    music.load();
 
-    disk.style.transform = 'rotate(0deg)';
-    
-    
-    currentTime.innerHTML = '00:00';
-    setTimeout(() => {
+    // Update UI elements after metadata is loaded
+    music.onloadedmetadata = () => {
+        // Update UI elements
+        songName.innerHTML = song.name;
+        artistName.innerHTML = song.artist;
+        disk.style.backgroundImage = `url('${song.cover}')`;
+        disk.style.transform = 'rotate(0deg)';
+        currentTime.innerHTML = '00:00';
         seekBar.max = music.duration;
-        console.log(music.duration);
-        musicDuration.innerHTML = formatTime(music.duration);    
-    },300);
-}
+
+        // Update the song duration after metadata is loaded
+        musicDuration.innerHTML = formatTime(music.duration);
+
+        // Play the music
+        playMusic();
+    };
+};
+
 
 setMusic(currentMusic);
 
