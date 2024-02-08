@@ -59,10 +59,26 @@ const setMusic = (i) => {
         // Update the song duration after metadata is loaded
         musicDuration.innerHTML = formatTime(music.duration);
 
-        // Play the music
+        // Play the music if it's ready
         playMusic();
     };
 };
+
+const playMusic = () => {
+    // Play the music if it's ready
+    if (!isNaN(music.duration) && music.duration > 0) {
+        music.play().catch(error => {
+            console.error('Playback was interrupted:', error);
+        });
+    }
+};
+
+// Listen for the 'canplaythrough' event to ensure the audio is ready to play
+music.addEventListener('canplaythrough', () => {
+    // Play the music when it's ready
+    playMusic();
+});
+
 
 
 setMusic(currentMusic);
