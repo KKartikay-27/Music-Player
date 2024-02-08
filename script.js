@@ -65,8 +65,8 @@ const setMusic = (i) => {
 };
 
 const playMusic = () => {
-    // Play the music if it's ready
-    if (!isNaN(music.duration) && music.duration > 0) {
+    // Play the music if it's ready and not already playing
+    if (!isNaN(music.duration) && music.duration > 0 && music.paused) {
         music.play().catch(error => {
             console.error('Playback was interrupted:', error);
         });
