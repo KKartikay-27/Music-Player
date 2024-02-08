@@ -16,7 +16,7 @@ const forwardBtn = document.querySelector('.forward-btn');
 const backwardBtn = document.querySelector('.backwards-btn');
 
 function playMusic() {
-    if (!isNaN(music.duration) && music.duration > 0 && music.paused) {
+    if (music.src && !isNaN(music.duration) && music.duration > 0 && music.paused) {
         music.play().catch(error => {
             console.error('Playback was interrupted:', error);
         });
@@ -25,9 +25,7 @@ function playMusic() {
 
 playBtn.addEventListener('click', () => {
     if (playBtn.className.includes('pause')) {
-        music.play().catch(error => {
-            console.error('Playback was interrupted:', error);
-        });
+        playMusic();
     } else {
         music.pause();
     }
@@ -41,7 +39,7 @@ const setMusic = (i) => {
     seekBar.value = 0;
     let song = songs[i];
     currentMusic = i;
-    
+
     music.pause();
     music.src = song.path;
     music.load();
@@ -64,9 +62,9 @@ document.addEventListener('keydown', (event) => {
     if (event.code === 'Space') {
         event.preventDefault();
         playBtn.style.outline = 'none';
-        
+
         if (playBtn.classList.contains('pause')) {
-            music.play();
+            playMusic();
         } else {
             music.pause();
         }
