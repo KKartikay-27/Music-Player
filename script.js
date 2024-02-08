@@ -1,4 +1,8 @@
-let currentMusic = 0;
+var currentMusic = 0;
+
+if (typeof currentMusic === 'undefined') {
+    var currentMusic = 0;
+}
 
 const music = document.querySelector('#audio');
 
@@ -12,19 +16,20 @@ const playBtn = document.querySelector('.play-btn');
 const forwardBtn = document.querySelector('.forward-btn');
 const backwardBtn = document.querySelector('.backwards-btn');
 
-playBtn.addEventListener('click', () => {
-    if (playBtn.className.includes('pause')) {
+playBtn.addEventListener('click', () =>{
+
+    if(playBtn.className.includes('pause')){
         music.play();
-    } else {
+    }else{
         music.pause();
     }
 
     playBtn.classList.toggle('pause');
     disk.classList.toggle('play');
     playBtn.style.outline = 'none';
-});
 
-//setup music
+})
+
 const setMusic = (i) => {
     seekBar.value = 0;
     let song = songs[i];
@@ -36,17 +41,17 @@ const setMusic = (i) => {
     disk.style.backgroundImage = `url('${song.cover}')`;
 
     disk.style.transform = 'rotate(0deg)';
-
+    
+    
     currentTime.innerHTML = '00:00';
-
     setTimeout(() => {
         seekBar.max = music.duration;
-        musicDuration.innerHTML = formatTime(music.duration);
-    }, 300);
-};
+        console.log(music.duration);
+        musicDuration.innerHTML = formatTime(music.duration);    
+    },300);
+}
 
-setMusic(0);
-
+setMusic(currentMusic);
 
 //formatting time in minutes and seconds
 
@@ -109,6 +114,7 @@ backwardBtn.addEventListener('click',() => {
     playBtn.focus(); 
 })
 
+// ... (your existing code)
 
 document.addEventListener('keydown', (event) => {
     if (event.code === 'Space') {
