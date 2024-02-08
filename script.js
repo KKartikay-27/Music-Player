@@ -16,19 +16,21 @@ const playBtn = document.querySelector('.play-btn');
 const forwardBtn = document.querySelector('.forward-btn');
 const backwardBtn = document.querySelector('.backwards-btn');
 
-playBtn.addEventListener('click', () =>{
-
-    if(playBtn.className.includes('pause')){
-        music.play();
-    }else{
-        music.pause();
+playBtn.addEventListener('click', () => {
+    const playPromise = music.play();
+    
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            // Playback started successfully
+        }).catch(error => {
+            console.error('Playback was interrupted:', error);
+        });
     }
 
     playBtn.classList.toggle('pause');
     disk.classList.toggle('play');
     playBtn.style.outline = 'none';
-
-})
+});
 
 const setMusic = (i) => {
     seekBar.value = 0;
