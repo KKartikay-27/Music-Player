@@ -5,7 +5,6 @@ if (typeof currentMusic === 'undefined') {
 }
 
 const music = document.querySelector('#audio');
-
 const seekBar = document.querySelector('.seek-bar');
 const songName = document.querySelector('.song-name');
 const artistName = document.querySelector('.artist');
@@ -15,6 +14,15 @@ const musicDuration = document.querySelector('.song-duration');
 const playBtn = document.querySelector('.play-btn');
 const forwardBtn = document.querySelector('.forward-btn');
 const backwardBtn = document.querySelector('.backwards-btn');
+
+const playMusic = () => {
+    // Play the music if it's ready and not already playing
+    if (!isNaN(music.duration) && music.duration > 0 && music.paused) {
+        music.play().catch(error => {
+            console.error('Playback was interrupted:', error);
+        });
+    }
+};
 
 playBtn.addEventListener('click', () => {
     if (playBtn.className.includes('pause')) {
@@ -30,7 +38,6 @@ playBtn.addEventListener('click', () => {
     disk.classList.toggle('play');
     playBtn.style.outline = 'none';
 });
-
 
 const setMusic = (i) => {
     seekBar.value = 0;
@@ -64,21 +71,7 @@ const setMusic = (i) => {
     };
 };
 
-const playMusic = () => {
-    // Play the music if it's ready and not already playing
-    if (!isNaN(music.duration) && music.duration > 0 && music.paused) {
-        music.play().catch(error => {
-            console.error('Playback was interrupted:', error);
-        });
-    }
-};
-
-// Listen for the 'canplaythrough' event to ensure the audio is ready to play
-music.addEventListener('canplaythrough', () => {
-    // Play the music when it's ready
-    playMusic();
-});
-
+// ... (your existing code)
 
 
 setMusic(currentMusic);
@@ -111,12 +104,6 @@ setInterval(() => {
 seekBar.addEventListener('change', () => {
     music.currentTime = seekBar.value;
 })
-
-const playMusic =  () => {
-    music.play();
-    playBtn.classList.remove('pause');
-    disk.classList.remove('play');
-}
 
 
 //forward and backward btn
